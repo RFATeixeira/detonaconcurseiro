@@ -8,7 +8,7 @@ import {
   onAuthStateChanged,
   User,
 } from 'firebase/auth';
-import { doc, setDoc, getDoc, getDocs, query, where, collection } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
 
 interface UserProfile {
@@ -120,21 +120,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       let email = cpfOrEmail;
 
-      // Se parecer um CPF, buscar o email correspondente
+      // Se parecer um CPF, buscar o email correspondente via API
       if (cpfOrEmail.replace(/\D/g, '').length === 11) {
-        // Buscar email pelo CPF no Firestore
-        const usersSnapshot = await getDocs(
-          query(
-            collection(db, 'users'),
-            where('cpf', '==', cpfOrEmail.replace(/\D/g, ''))
-          )
-        );
+        const response = await fetch('/api/resolve-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ cpf: cpfOrEmail }),
+        });
 
-        if (usersSnapshot.empty) {
-          throw new Error('CPF não encontrado. Verifique os dados ou registre-se.');
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          const message = data?.error || 'CPF não encontrado. Verifique os dados ou registre-se.';
+          throw new Error(message);
         }
 
-        email = usersSnapshot.docs[0].data().email;
+        const data = await response.json();
+        email = data.email;
       }
 
       // Fazer login com email e senha
