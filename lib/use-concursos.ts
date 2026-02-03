@@ -96,7 +96,7 @@ export const useConcursos = () => {
     });
 
     return () => unsubscribe();
-  }, [auth.currentUser?.uid]);
+  }, [auth?.currentUser?.uid]);
 
   const adicionarConcurso = async (nomeConcurso: string, numeroInscricao: string) => {
     if (!auth || !db) {

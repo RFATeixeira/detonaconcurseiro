@@ -8,6 +8,9 @@ import GlassBackground from '@/components/GlassBackground';
 import { db } from '@/lib/firebase';
 import { useConcursos } from '@/lib/use-concursos';
 
+// Forçar renderização dinâmica para evitar prerender
+export const dynamic = 'force-dynamic';
+
 type ChatMessage = {
   id: string;
   text: string;

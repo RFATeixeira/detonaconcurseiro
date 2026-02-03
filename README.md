@@ -203,31 +203,7 @@ Este projeto está sob a licença MIT.
 
 ## � Deploy
 
-### Netlify
-
-1. Crie uma conta no [Netlify](https://netlify.com)
-2. Conecte seu repositório GitHub
-3. Configure as variáveis de ambiente:
-   - Vá em **Site settings → Environment variables**
-   - Adicione todas as variáveis do `.env.local`:
-     - `NEXT_PUBLIC_FIREBASE_API_KEY`
-     - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
-     - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
-     - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
-     - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
-     - `NEXT_PUBLIC_FIREBASE_APP_ID`
-     - `FIREBASE_ADMIN_PROJECT_ID`
-     - `FIREBASE_ADMIN_CLIENT_EMAIL`
-     - `FIREBASE_ADMIN_PRIVATE_KEY`
-4. Build settings (já configurado no `netlify.toml`):
-   - Build command: `npm run build`
-   - Publish directory: `.next`
-5. Deploy!
-
-**Importante**: No Firebase Console, adicione o domínio do Netlify em:
-- Authentication → Settings → Authorized domains
-
-### Vercel (alternativa)
+### Vercel
 
 1. Instale Vercel CLI: `npm i -g vercel`
 2. Execute: `vercel`
