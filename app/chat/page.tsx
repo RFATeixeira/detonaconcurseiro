@@ -242,7 +242,7 @@ export default function ChatPage() {
 
   return (
     <div
-      className="min-h-screen bg-gray-950 relative overflow-hidden"
+      className="fixed inset-0 bg-gray-950 overflow-hidden"
       style={{
         backgroundImage:
           'linear-gradient(135deg, rgb(3, 7, 18) 0%, rgb(17, 24, 39) 50%, rgb(0, 0, 0) 100%)',
@@ -250,29 +250,41 @@ export default function ChatPage() {
     >
       <GlassBackground />
 
-      <main className="relative z-10 max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="backdrop-blur-sm bg-white/5 rounded-2xl shadow-2xl border border-white/10 overflow-hidden flex h-[calc(100vh-8rem)]">
+      <main className="relative z-10 w-full h-full flex flex-col overflow-hidden pt-16 md:pt-24 md:px-4">
+        <div className="backdrop-blur-sm bg-white/5 rounded-none md:rounded-2xl shadow-2xl border-0 md:border border-white/10 overflow-x-hidden overflow-y-hidden flex md:h-[calc(100vh-8rem)] h-full flex-col md:flex-row w-full">
           {/* Sidebar - Menu lateral */}
           <div
             className={`${
-              isSidebarOpen ? 'w-80' : 'w-0'
-            } transition-all duration-300 border-r border-white/10 overflow-hidden flex flex-col`}
+              isSidebarOpen ? 'w-full md:w-80 h-screen md:h-auto' : 'w-0 h-0 md:h-auto'
+            } transition-all duration-300 border-r-0 md:border-r border-white/10 overflow-hidden flex flex-col absolute md:relative md:block z-50 md:z-10 bg-gray-950 md:bg-transparent`}
           >
             <div
-              className="backdrop-blur-sm bg-gray-900/30 px-4 py-4 border-b border-white/10 flex items-center justify-between"
+              className="shrink-0 backdrop-blur-sm bg-gray-900/30 px-4 py-4 border-b border-white/10 flex items-center justify-between"
               style={{
                 backgroundImage:
                   'linear-gradient(90deg, rgba(6, 182, 212, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%)',
               }}
             >
               <h3 className="text-lg font-bold text-white">Conversas</h3>
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="md:hidden text-gray-400 hover:text-white"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
 
+            {/* Chat Rooms - with flex-1 to push admin to bottom */}
             <div className="flex-1 overflow-y-auto">
               {chatRooms.map((room) => (
                 <button
                   key={room.id}
-                  onClick={() => setActiveRoom(room.id)}
+                  onClick={() => {
+                    setActiveRoom(room.id);
+                    setIsSidebarOpen(false);
+                  }}
                   className={`w-full px-4 py-4 text-left border-b border-white/5 transition-all ${
                     activeRoom === room.id
                       ? 'bg-cyan-500/10 border-l-4 border-l-cyan-400'
@@ -299,52 +311,12 @@ export default function ChatPage() {
                 </button>
               ))}
             </div>
-
-            {/* Admin Options */}
-            {userProfile?.isAdmin && (
-              <div className="border-t border-white/10 p-3 backdrop-blur-sm bg-purple-500/10 space-y-3">
-                <div className="flex items-center gap-2 text-purple-300 text-xs font-semibold">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-                    />
-                  </svg>
-                  Opções Admin
-                </div>
-
-                {/* Modo Aviso */}
-                <button
-                  onClick={() => setIsAlertMode(!isAlertMode)}
-                  className={`w-full text-xs font-semibold px-3 py-2 rounded-lg transition-all flex items-center gap-2 ${
-                    isAlertMode
-                      ? 'bg-red-500/40 text-red-200 border border-red-400/50'
-                      : 'bg-purple-500/30 text-purple-200 border border-purple-400/30 hover:bg-purple-500/40'
-                  }`}
-                >
-                  <span>🚨</span>
-                  {isAlertMode ? 'Modo Aviso ATIVO' : 'Ativar Modo Aviso'}
-                </button>
-
-                <p className="text-xs text-gray-400">
-                  🗑️ Deletar mensagens ao clicar nelas
-                </p>
-              </div>
-            )}
           </div>
 
           {/* Chat Area */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col w-full md:w-auto relative overflow-x-hidden overflow-y-hidden">
             <div
-              className="backdrop-blur-sm bg-gray-900/30 px-6 py-4 border-b border-white/10 flex items-center justify-between"
+              className="shrink-0 backdrop-blur-sm bg-gray-900/30 px-4 md:px-6 py-4 border-b border-white/10 flex items-center justify-between"
               style={{
                 backgroundImage:
                   activeAlerts.has(activeRoom)
@@ -382,8 +354,43 @@ export default function ChatPage() {
                 </div>
               </div>
 
-              {/* Botão de Notificações */}
-              <div className="relative z-1000">
+              {/* Botão de Notificações + Aviso */}
+              <div className="relative z-1000 flex items-center gap-2">
+                {userProfile?.isAdmin && (
+                  <button
+                    onClick={() => setIsAlertMode(!isAlertMode)}
+                    className={`transition-all ${
+                      isAlertMode
+                        ? 'text-red-400 scale-110'
+                        : 'text-gray-400 hover:text-red-400 hover:scale-110'
+                    }`}
+                    title={isAlertMode ? 'Modo aviso ativo' : 'Ativar modo aviso'}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"       
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                     >
+                      {/* Triângulo */}
+                      <path
+                        strokeLinecap="round"      
+                        strokeLinejoin="round"
+                        d="M12 3L2.25 20.25h19.5L12 3Z"
+                      />
+
+                       {/* Exclamação */}
+                        <path
+                         strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 9v5"
+                      />
+                        <circle cx="12" cy="17" r="1" fill="currentColor" />
+                      </svg>
+                  </button>
+                )}
                 <button
                   onClick={handleOpenNotifications}
                   className="relative text-gray-400 hover:text-cyan-300 transition-colors"
@@ -413,7 +420,7 @@ export default function ChatPage() {
             </div>
             
 
-            <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4 relative z-0 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="flex-1 overflow-y-auto px-1 md:px-6 py-4 md:py-6 space-y-4 relative z-0 scrollbar-hide w-full" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {messages.length === 0 ? (
                 <div className="text-center text-gray-400 mt-20">
                   Nenhuma mensagem ainda. Seja o primeiro a falar neste chat.
@@ -426,10 +433,10 @@ export default function ChatPage() {
                     : 'agora';
 
                   return (
-                    <div key={msg.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'} group`}>
-                      <div className="flex items-start gap-2 max-w-[75%]">
+                    <div key={msg.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'} group w-full`}>
+                      <div className="flex items-start gap-y-2 max-w-[85%] md:max-w-[75%] min-w-0">
                         <div
-                          className={`flex-1 rounded-xl border px-4 py-3 backdrop-blur-sm ${
+                          className={`flex-1 rounded-xl border px-2 md:px-4 py-2 md:py-3 backdrop-blur-sm text-sm md:text-base overflow-hidden ${
                             msg.isAlert
                               ? 'bg-red-500/30 border-red-400/50 text-red-100 shadow-lg shadow-red-500/20'
                               : msg.isAdmin
@@ -439,17 +446,17 @@ export default function ChatPage() {
                               : 'bg-white/5 border-white/10 text-gray-100'
                           }`}
                         >
-                          <div className="flex items-center justify-between gap-3 text-xs mb-1">
-                            <div className="flex items-center gap-2">
-                              {msg.isAlert && <span className="text-red-400">🚨</span>}
-                              <span className="text-gray-400 truncate">{msg.displayName}</span>
+                          <div className="flex items-center justify-between gap-2 md:gap-3 text-xs mb-1">
+                            <div className="flex items-center gap-2 min-w-0">
+                              {msg.isAlert && <span className="text-red-400 shrink-0">🚨</span>}
+                              <span className="text-gray-400 truncate text-xs md:text-sm">{msg.displayName}</span>
                               {msg.isAdmin && (
-                                <span className={`${msg.isAlert ? 'bg-red-500/40 text-red-100' : 'bg-purple-500/30 text-purple-200'} px-2 py-0.5 rounded text-[10px] font-semibold uppercase`}>
+                                <span className={`${msg.isAlert ? 'bg-red-500/40 text-red-100' : 'bg-purple-500/30 text-purple-200'} px-1.5 md:px-2 py-0.5 rounded text-[9px] md:text-[10px] font-semibold uppercase shrink-0`}>
                                   Admin
                                 </span>
                               )}
                             </div>
-                            <span className="text-gray-400">{time}</span>
+                            <span className="text-gray-400 text-xs shrink-0">{time}</span>
                           </div>
                           
                           {msg.replyTo && (
@@ -459,10 +466,10 @@ export default function ChatPage() {
                             </div>
                           )}
                           
-                          <p className="text-sm leading-relaxed break">{msg.text}</p>
+                          <p className="text-xs md:text-sm leading-relaxed wrap-break-word whitespace-pre-wrap">{msg.text}</p>
                         </div>
                         
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center gap-0.5 md:gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                           <button
                             onClick={() => handleReplyMessage(msg)}
                             className="text-cyan-400 hover:text-cyan-300 transition-colors"
@@ -514,22 +521,25 @@ export default function ChatPage() {
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="px-6 py-4 border-t border-white/10">
-              {replyingTo && (
-                <div className="mb-3 p-3 rounded-lg bg-cyan-500/10 border border-cyan-400/30 flex items-start justify-between">
-                  <div className="flex-1">
-                    <p className="text-xs text-cyan-400 font-semibold">Respondendo a {replyingTo.displayName}</p>
-                    <p className="text-sm text-gray-300 line-clamp-2">{replyingTo.text}</p>
-                  </div>
-                  <button
-                    onClick={() => setReplyingTo(null)}
-                    className="text-gray-400 hover:text-white ml-2 shrink-0"
-                  >
-                    ✕
-                  </button>
+            {/* Input Area - Fixed at bottom */}
+            {replyingTo && (
+              <div className="border-t border-white/10 bg-blue-500/10 px-4 md:px-6 py-3 flex items-center justify-between">
+                <div className="flex-1">
+                  <p className="text-xs text-blue-300 mb-1">Respondendo para:</p>
+                  <p className="text-sm text-gray-200 truncate">{replyingTo.text}</p>
                 </div>
-              )}
-              <div className="flex gap-3">
+                <button
+                  onClick={() => setReplyingTo(null)}
+                  className="text-gray-400 hover:text-white ml-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            )}
+            <div className="shrink-0 border-t border-white/10 bg-gray-900/40 backdrop-blur-sm w-full">
+              <div className="flex gap-3 px-4 md:px-6 py-4">
                 <input
                   type="text"
                   value={message}
@@ -541,12 +551,12 @@ export default function ChatPage() {
                     }
                   }}
                   placeholder="Digite sua mensagem..."
-                  className="flex-1 bg-gray-900/40 border border-white/10 rounded-xl px-4 py-3 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/40"
+                  className="flex-1 bg-gray-900/40 border border-white/10 rounded-xl px-4 py-3 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 text-sm md:text-base"
                 />
                 <button
                   onClick={handleSend}
                   disabled={sending || !message.trim()}
-                  className="px-5 py-3 rounded-xl font-semibold text-white transition-all disabled:opacity-60 disabled:cursor-not-allowed border border-cyan-400/30 hover:border-cyan-400/60"
+                  className="px-4 md:px-5 py-3 rounded-xl font-semibold text-white transition-all disabled:opacity-60 disabled:cursor-not-allowed border border-cyan-400/30 hover:border-cyan-400/60 text-sm md:text-base"
                   style={{
                     backgroundImage:
                       'linear-gradient(90deg, rgba(6, 182, 212, 0.3) 0%, rgba(59, 130, 246, 0.3) 100%)',

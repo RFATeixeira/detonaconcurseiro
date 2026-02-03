@@ -51,8 +51,8 @@ export default function Navbar() {
               height={40}
               className="object-contain"
             />
-            <span className="text-lg sm:text-2xl font-bold text-cyan-500 truncate">
-              Detona
+            <span className="text-sm sm:text-2xl font-bold text-cyan-500 truncate">
+              Detona Concurseiro
             </span>
           </Link>
 
