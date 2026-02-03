@@ -242,7 +242,7 @@ export default function ChatPage() {
 
   return (
     <div
-      className="fixed inset-0 bg-gray-950 overflow-hidden"
+      className="fixed inset-0 bg-gray-950 overflow-hidden overscroll-none"
       style={{
         backgroundImage:
           'linear-gradient(135deg, rgb(3, 7, 18) 0%, rgb(17, 24, 39) 50%, rgb(0, 0, 0) 100%)',
@@ -420,7 +420,7 @@ export default function ChatPage() {
             </div>
             
 
-            <div className="flex-1 overflow-y-auto px-1 md:px-6 py-4 md:py-6 space-y-4 relative z-0 scrollbar-hide w-full" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="flex-1 overflow-y-auto overscroll-contain px-1 md:px-6 py-4 md:py-6 space-y-4 relative z-0 scrollbar-hide w-full" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {messages.length === 0 ? (
                 <div className="text-center text-gray-400 mt-20">
                   Nenhuma mensagem ainda. Seja o primeiro a falar neste chat.
