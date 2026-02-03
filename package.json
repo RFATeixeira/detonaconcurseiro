@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "setup": "node -e \"require('fs').existsSync('.env.local') ? require('fs').copyFileSync('.env.local', '.env.production.local') : console.error('❌ .env.local não encontrado!')\""
   },
   "dependencies": {
     "@opentelemetry/api": "^1.9.0",

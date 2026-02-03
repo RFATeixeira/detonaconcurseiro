@@ -60,13 +60,24 @@ npm install
 
 ```bash
 cp .env.example .env.local
+# Edite .env.local com suas credenciais do Firebase
 ```
+
+### Passo 4: Configure para Deploy
+
+Para preparar o projeto para deploy automático na Vercel sem necessidade de configuração manual:
+
+```bash
+npm run setup
+```
+
+Este comando copia seu `.env.local` para `.env.production.local`, que será enviado para GitHub e lido automaticamente pela Vercel durante o deploy.
 
 #### Obter credenciais do Firebase:
 - **Client SDK**: Project Settings → General → Your apps
 - **Admin SDK**: Project Settings → Service Accounts → Generate new private key
 
-### Passo 4: Configure as regras do Firestore
+### Passo 5: Configure as regras do Firestore
 
 ```javascript
 rules_version = '2';
@@ -87,13 +98,13 @@ service cloud.firestore {
 }
 ```
 
-### Passo 5: Crie um usuário admin
+### Passo 6: Crie um usuário admin
 
 1. Registre-se no sistema
 2. No Firestore, vá em `users/{seu-uid}`
 3. Adicione o campo: `isAdmin: true`
 
-### Passo 6: Execute o projeto
+### Passo 7: Execute o projeto localmente
 ```bash
 npm run dev
 ```
@@ -203,12 +214,38 @@ Este projeto está sob a licença MIT.
 
 ## � Deploy
 
-### Vercel
+### Vercel (Automático - Sem Configuração Manual)
 
-1. Instale Vercel CLI: `npm i -g vercel`
-2. Execute: `vercel`
-3. Configure as variáveis de ambiente quando solicitado
-4. Deploy automático a cada push no GitHub
+1. Prepare o projeto localmente:
+```bash
+npm run setup
+```
+
+2. Faça commit e push:
+```bash
+git add -A
+git commit -m "Deploy: adicionar .env.production.local"
+git push origin master
+```
+
+3. A Vercel detecta o novo push automaticamente e:
+   - Clona o repositório
+   - Lê as variáveis de `.env.production.local`
+   - Faz o build
+   - Faz deploy
+
+4. **Apenas uma vez**: Adicione o domínio Vercel ao Firebase:
+   - Vá em [Firebase Console](https://console.firebase.google.com)
+   - Authentication → Settings → Authorized domains
+   - Adicione seu domínio Vercel (ex: `seu-projeto.vercel.app`)
+
+### Vercel CLI (Alternativa)
+
+```bash
+npm i -g vercel
+npm run setup
+vercel deploy --prod
+```
 
 ## �📞 Suporte
 
