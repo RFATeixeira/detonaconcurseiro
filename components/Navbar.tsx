@@ -41,9 +41,9 @@ export default function Navbar() {
   return (
     <nav className="bg-gray-900 border-b border-gray-800 shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-16 gap-4">
           {/* Logo */}
-          <Link href="/dashboard" className="flex items-center gap-3 shrink-0">
+          <Link href="/dashboard" className="flex items-center gap-2 shrink-0 min-w-0">
             <img 
               src="/logo.png" 
               alt="Detona Concurseiro" 
@@ -51,8 +51,8 @@ export default function Navbar() {
               height={40}
               className="object-contain"
             />
-            <span className="text-2xl font-bold text-cyan-500">
-              Detona Concurseiro
+            <span className="text-lg sm:text-2xl font-bold text-cyan-500 truncate">
+              Detona
             </span>
           </Link>
 
@@ -131,27 +131,8 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-            className="md:hidden text-gray-400 hover:text-cyan-400 transition-colors"
-            aria-label="Abrir menu"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              className="w-6 h-6"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-
           {/* Right Section: User Info + Admin Shield + Logout */}
-          <div className="flex items-center space-x-4 shrink-0">
+          <div className="hidden md:flex items-center space-x-4 shrink-0">
             <Link
               href="/perfil"
               className="text-gray-400 hover:text-cyan-400 transition-colors text-sm"
@@ -202,6 +183,79 @@ export default function Navbar() {
                 </svg>
               </Link>
             )}
+          </div>
+
+          {/* Mobile Menu Button & User Actions */}
+          <div className="md:hidden flex items-center gap-3 shrink-0">
+            <Link
+              href="/perfil"
+              className="text-gray-400 hover:text-cyan-400 transition-colors"
+              title="Perfil"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+            </Link>
+            <button
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="text-gray-400 hover:text-red-400 transition-colors disabled:opacity-50"
+              title={isLoggingOut ? 'Desconectando...' : 'Sair'}
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                strokeWidth={2} 
+                stroke="currentColor" 
+                className="w-5 h-5"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" 
+                />
+              </svg>
+            </button>
+            {userProfile?.isAdmin && (
+              <Link
+                href="/admin"
+                className="text-gray-400 hover:text-cyan-400 transition-colors"
+                title="Admin"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  strokeWidth={2} 
+                  stroke="currentColor" 
+                  className="w-5 h-5"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" 
+                  />
+                </svg>
+              </Link>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+              className="text-gray-400 hover:text-cyan-400 transition-colors"
+              aria-label="Abrir menu"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className="w-6 h-6"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>

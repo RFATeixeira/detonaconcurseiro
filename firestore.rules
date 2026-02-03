@@ -17,7 +17,7 @@ service cloud.firestore {
     function isAdmin() {
       return isAuthenticated() && 
              exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
     }
     
     // ==========================================
@@ -85,6 +85,23 @@ service cloud.firestore {
       match /messages/{messageId} {
         allow read, write: if isAuthenticated();
       }
+    }
+    
+    // ==========================================
+    // LIVE CHAT - Chat em tempo real
+    // ==========================================
+    match /live-chat/{messageId} {
+      // Todos os usuários autenticados podem ler mensagens
+      allow read: if isAuthenticated();
+      
+      // Todos os usuários autenticados podem criar mensagens
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      
+      // Apenas o autor ou admin pode deletar
+      allow delete: if isAuthenticated() && (request.auth.uid == resource.data.userId || isAdmin());
+      
+      // Apenas o autor pode atualizar (caso necessário)
+      allow update: if isAuthenticated() && request.auth.uid == resource.data.userId;
     }
     
     // ==========================================

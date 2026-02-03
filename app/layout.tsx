@@ -20,6 +20,16 @@ export const metadata: Metadata = {
   icons: {
     icon: "/logo.png",
   },
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Detona Concurseiro",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  viewport: "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no",
 };
 
 export default function RootLayout({
@@ -29,6 +39,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
+      <head>
+        <meta name="theme-color" content="#06b6d4" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Detona Concurseiro" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="msapplication-TileColor" content="#06b6d4" />
+        <meta name="msapplication-TileImage" content="/logo.png" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
