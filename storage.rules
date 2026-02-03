@@ -1,0 +1,52 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Função helper para verificar se o usuário está autenticado
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Função helper para verificar se é o próprio usuário
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // ==========================================
+    // DOCUMENTOS DOS USUÁRIOS
+    // ==========================================
+    match /users/{userId}/documents/{document=**} {
+      // Usuário pode fazer upload, ler e deletar seus próprios documentos
+      allow read, write, delete: if isAuthenticated() && isOwner(userId);
+    }
+    
+    // ==========================================
+    // FOTOS DE PERFIL
+    // ==========================================
+    match /users/{userId}/profile/{fileName} {
+      // Usuário pode fazer upload, ler e deletar sua própria foto
+      allow read, write, delete: if isAuthenticated() && isOwner(userId);
+      
+      // Limitar tamanho do arquivo (5MB)
+      allow write: if request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+    
+    // ==========================================
+    // ANEXOS DE CONCURSOS (se houver)
+    // ==========================================
+    match /concursos/{concursoId}/anexos/{fileName} {
+      // Todos os usuários autenticados podem ler
+      allow read: if isAuthenticated();
+      
+      // Apenas admins podem escrever (você pode adicionar verificação de admin)
+      allow write, delete: if isAuthenticated();
+    }
+    
+    // Bloquear tudo o resto
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

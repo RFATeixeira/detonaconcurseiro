@@ -1,0 +1,102 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Função helper para verificar se o usuário está autenticado
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Função helper para verificar se é o próprio usuário
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Função helper para verificar se é admin
+    function isAdmin() {
+      return isAuthenticated() && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // ==========================================
+    // USERS - Dados dos usuários
+    // ==========================================
+    match /users/{userId} {
+      // Qualquer usuário autenticado pode ler seus próprios dados
+      allow read: if isOwner(userId);
+      
+      // Qualquer usuário autenticado pode criar/atualizar seus próprios dados
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      allow update: if isOwner(userId);
+      
+      // Apenas admins podem deletar usuários
+      allow delete: if isAdmin();
+      
+      // ==========================================
+      // CONCURSOS DO USUÁRIO (subcollection)
+      // ==========================================
+      match /concursos/{concursoId} {
+        // Usuário pode fazer tudo com seus próprios concursos
+        allow read, write: if isOwner(userId);
+      }
+    }
+    
+    // ==========================================
+    // CONCURSOS DATA - Dados globais de concursos
+    // ==========================================
+    match /concursosData/{concursoId} {
+      // Todos os usuários autenticados podem LER concursos
+      allow read: if isAuthenticated();
+      
+      // Apenas admins podem CRIAR, ATUALIZAR ou DELETAR
+      allow create, update, delete: if isAdmin();
+      
+      // ==========================================
+      // CANDIDATOS (subcollection)
+      // ==========================================
+      match /candidatos/{candidatoId} {
+        // Todos os usuários autenticados podem LER candidatos
+        allow read: if isAuthenticated();
+        
+        // Apenas admins podem CRIAR, ATUALIZAR ou DELETAR
+        allow create, update, delete: if isAdmin();
+      }
+    }
+    
+    // ==========================================
+    // CONCURSOS EXTERNOS PENDENTES
+    // ==========================================
+    match /concursosExternosPendentes/{concursoId} {
+      // Todos os usuários autenticados podem LER concursos pendentes
+      allow read: if isAuthenticated();
+      
+      // Apenas admins podem CRIAR, ATUALIZAR ou DELETAR
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // ==========================================
+    // MENSAGENS DO CHAT (se existir)
+    // ==========================================
+    match /chats/{chatId} {
+      allow read, write: if isAuthenticated();
+      
+      match /messages/{messageId} {
+        allow read, write: if isAuthenticated();
+      }
+    }
+    
+    // ==========================================
+    // DOCUMENTOS UPLOADADOS (se existir)
+    // ==========================================
+    match /documents/{userId}/{document=**} {
+      allow read, write: if isOwner(userId) || isAdmin();
+    }
+    
+    // Bloquear tudo o resto
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
