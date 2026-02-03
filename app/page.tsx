@@ -22,7 +22,7 @@ export default function Home() {
                 height={40}
                 className="object-contain"
               />
-              <h1 className="text-2xl font-bold text-cyan-400 drop-shadow-lg">
+              <h1 className="text-sm sm:text-2xl font-bold text-cyan-400 drop-shadow-lg">
                 Detona Concurseiro
               </h1>
             </div>
