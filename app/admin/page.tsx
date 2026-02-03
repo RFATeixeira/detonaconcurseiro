@@ -7,6 +7,7 @@ import AddConcursoDataForm from '@/components/AddConcursoDataForm';
 import ImportarPlanilha from '@/components/ImportarPlanilha';
 import { useConcursosData } from '@/lib/use-concursos-data';
 import Link from 'next/link';
+import GlassBackground from '@/components/GlassBackground';
 
 export default function AdminPage() {
   const { user, userProfile, loading } = useAuth();
@@ -47,20 +48,28 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black">
+    <div 
+      className="min-h-screen relative overflow-hidden"
+      style={{
+        backgroundImage:
+          'linear-gradient(135deg, rgb(3, 7, 18) 0%, rgb(17, 24, 39) 50%, rgb(0, 0, 0) 100%)',
+      }}
+    >
+      <GlassBackground />
+
       {/* Header */}
-      <div className="bg-linear-to-r from-cyan-900/30 to-blue-900/30 border-b border-cyan-500/20 backdrop-blur-md sticky top-0 z-10">
+      <div className="backdrop-blur-md bg-gray-900/40 border-b border-cyan-500/20 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white flex items-center gap-2">
                 🛡️ Painel Administrativo
               </h1>
-              <p className="text-gray-400 text-sm mt-1">Gerenciar concursos e aprovações</p>
+              <p className="text-cyan-200/70 text-sm mt-1">Gerenciar concursos e aprovações</p>
             </div>
             <Link
               href="/"
-              className="text-gray-400 hover:text-cyan-400 transition-colors"
+              className="text-cyan-200/70 hover:text-cyan-400 transition-colors"
             >
               ← Voltar
             </Link>
@@ -69,17 +78,17 @@ export default function AdminPage() {
       </div>
 
       {/* Conteúdo Principal */}
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8 relative z-10">
         {/* Botão de Aprovar Concursos Externos */}
-        <div className="bg-linear-to-r from-purple-900/20 to-pink-900/20 border border-purple-500/30 rounded-lg p-6 backdrop-blur-sm">
+        <div className="backdrop-blur-md bg-linear-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 rounded-xl p-6 hover:border-cyan-500/40 transition-all shadow-lg shadow-cyan-500/5">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-xl font-bold text-white mb-1">Concursos Externos Pendentes</h3>
-              <p className="text-gray-400 text-sm">Revise e aprove concursos importados da API</p>
+              <p className="text-cyan-200/60 text-sm">Revise e aprove concursos importados da API</p>
             </div>
             <Link
               href="/admin/aprovar-concursos"
-              className="bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-purple-500/30 whitespace-nowrap"
+              className="backdrop-blur-sm bg-cyan-500/10 border border-cyan-400/30 hover:bg-cyan-500/20 hover:border-cyan-400/60 text-cyan-100 px-8 py-3 rounded-xl font-semibold transition-all shadow-lg hover:shadow-cyan-500/20 whitespace-nowrap"
             >
               📋 Gerenciar Aprovações
             </Link>
@@ -87,26 +96,26 @@ export default function AdminPage() {
         </div>
 
         {/* Formulário de Adicionar */}
-        <div className="bg-gray-900 border border-gray-800 rounded-lg p-8 shadow-xl hover:border-cyan-500/30 transition-colors">
+        <div className="backdrop-blur-md bg-gray-900/40 border border-white/10 rounded-xl p-8 shadow-xl hover:border-cyan-400/40 transition-all hover:shadow-cyan-500/10">
           <h2 className="text-2xl font-bold text-white mb-1">Novo Concurso</h2>
-          <p className="text-gray-400 text-sm mb-6">Adicione um novo concurso manualmente ao sistema</p>
+          <p className="text-cyan-200/60 text-sm mb-6">Adicione um novo concurso manualmente ao sistema</p>
           <AddConcursoDataForm />
         </div>
 
         {/* Importar Planilha */}
         <div>
           {concursosData.length === 0 ? (
-            <div className="bg-yellow-900/20 border border-yellow-600/30 backdrop-blur-sm p-6 rounded-lg">
-              <p className="text-yellow-400 font-semibold">⚠️ Crie um concurso primeiro antes de importar candidatos.</p>
+            <div className="backdrop-blur-md bg-yellow-500/10 border border-yellow-500/30 p-6 rounded-xl">
+              <p className="text-yellow-200 font-semibold">⚠️ Crie um concurso primeiro antes de importar candidatos.</p>
             </div>
           ) : (
-            <div className="bg-gray-900 border border-gray-800 rounded-lg p-8 shadow-xl hover:border-cyan-500/30 transition-colors">
+            <div className="backdrop-blur-md bg-gray-900/40 border border-white/10 rounded-xl p-8 shadow-xl hover:border-cyan-400/40 transition-all hover:shadow-cyan-500/10">
               <h2 className="text-2xl font-bold text-white mb-1">Importar Candidatos</h2>
-              <p className="text-gray-400 text-sm mb-6">Importe candidatos para um concurso existente via planilha</p>
+              <p className="text-cyan-200/60 text-sm mb-6">Importe candidatos para um concurso existente via planilha</p>
               <select
                 value={concursoSelecionado}
                 onChange={(e) => setConcursoSelecionado(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-100 mb-6 font-semibold"
+                className="w-full px-4 py-3 backdrop-blur-sm bg-gray-800/60 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/50 text-gray-100 mb-6 font-semibold"
               >
                 <option value="">-- Selecione um concurso --</option>
                 {concursosData.map((concurso) => (
@@ -127,33 +136,33 @@ export default function AdminPage() {
         </div>
 
         {/* Lista de Concursos Adicionados */}
-        <div className="bg-gray-900 border border-gray-800 rounded-lg p-8 shadow-xl hover:border-cyan-500/30 transition-colors">
+        <div className="backdrop-blur-md bg-gray-900/40 border border-white/10 rounded-xl p-8 shadow-xl hover:border-cyan-400/40 transition-all hover:shadow-cyan-500/10">
           <h2 className="text-2xl font-bold text-white mb-6">Concursos Cadastrados</h2>
 
           {concursosData.length === 0 ? (
-            <p className="text-gray-400 text-center py-8">Nenhum concurso cadastrado ainda.</p>
+            <p className="text-cyan-200/60 text-center py-8">Nenhum concurso cadastrado ainda.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-800/50 border-b border-gray-700">
-                    <th className="p-4 text-left text-gray-300 font-semibold">Nome</th>
-                    <th className="p-4 text-left text-gray-300 font-semibold">Banca</th>
-                    <th className="p-4 text-left text-gray-300 font-semibold">Cargo</th>
-                    <th className="p-4 text-left text-gray-300 font-semibold">Data Prova</th>
-                    <th className="p-4 text-center text-gray-300 font-semibold">Ações</th>
+                  <tr className="backdrop-blur-sm bg-gray-800/50 border-b border-cyan-500/20">
+                    <th className="p-4 text-left text-cyan-100 font-semibold">Nome</th>
+                    <th className="p-4 text-left text-cyan-100 font-semibold">Banca</th>
+                    <th className="p-4 text-left text-cyan-100 font-semibold">Cargo</th>
+                    <th className="p-4 text-left text-cyan-100 font-semibold">Data Prova</th>
+                    <th className="p-4 text-center text-cyan-100 font-semibold">Ações</th>
                   </tr>
                 </thead>
                 <tbody>
                   {concursosData.map((concurso, idx) => (
                     <tr 
                       key={concurso.id} 
-                      className={`${idx % 2 === 0 ? 'bg-gray-900/50' : 'bg-gray-800/30'} border-b border-gray-700 hover:bg-gray-800/50 transition-colors`}
+                      className={`${idx % 2 === 0 ? 'bg-gray-900/30' : 'bg-gray-800/20'} border-b border-white/5 hover:bg-cyan-500/5 transition-colors`}
                     >
-                      <td className="p-4 text-gray-300 font-medium">{concurso.nomeConcurso}</td>
-                      <td className="p-4 text-gray-300">{concurso.banca}</td>
-                      <td className="p-4 text-gray-300">{concurso.cargo}</td>
-                      <td className="p-4 text-gray-300">
+                      <td className="p-4 text-white font-medium">{concurso.nomeConcurso}</td>
+                      <td className="p-4 text-cyan-100/80">{concurso.banca}</td>
+                      <td className="p-4 text-cyan-100/80">{concurso.cargo}</td>
+                      <td className="p-4 text-cyan-100/80">
                         {new Date(concurso.dataProva).toLocaleDateString('pt-BR')}
                       </td>
                       <td className="p-4 text-center">
@@ -163,7 +172,7 @@ export default function AdminPage() {
                               href={concurso.documentoURL}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm font-semibold transition-colors"
+                              className="backdrop-blur-sm bg-cyan-500/10 border border-cyan-400/30 hover:bg-cyan-500/20 text-cyan-100 px-3 py-1 rounded-lg text-sm font-semibold transition-all"
                             >
                               📥 Ver
                             </a>
@@ -171,7 +180,7 @@ export default function AdminPage() {
                           <button
                             onClick={() => handleDelete(concurso.id)}
                             disabled={isDeleting === concurso.id}
-                            className="bg-red-600 hover:bg-red-700 disabled:bg-gray-700 disabled:text-gray-400 text-white px-3 py-1 rounded text-sm font-semibold transition-colors"
+                            className="backdrop-blur-sm bg-red-500/10 border border-red-400/30 hover:bg-red-500/20 disabled:bg-gray-700/50 disabled:text-gray-400 disabled:border-gray-600/30 text-red-100 px-3 py-1 rounded-lg text-sm font-semibold transition-all"
                           >
                             {isDeleting === concurso.id ? '⏳' : '🗑️'}
                           </button>

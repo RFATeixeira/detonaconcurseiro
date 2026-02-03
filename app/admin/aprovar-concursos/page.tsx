@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/auth-context';
 import { useConcursosExternos } from '@/lib/use-concursos-externos';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import GlassBackground from '@/components/GlassBackground';
 
 interface ConcursoEditavel {
   id: string;
@@ -195,8 +196,16 @@ export default function AprovarConcursosPage() {
     });
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black p-6">
-      <div className="max-w-7xl mx-auto">
+    <div 
+      className="min-h-screen relative overflow-hidden p-6"
+      style={{
+        backgroundImage:
+          'linear-gradient(135deg, rgb(3, 7, 18) 0%, rgb(17, 24, 39) 50%, rgb(0, 0, 0) 100%)',
+      }}
+    >
+      <GlassBackground />
+
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Cabeçalho */}
         <div className="mb-8">
           <Link href="/admin" className="text-cyan-400 hover:text-cyan-300 text-sm mb-4 inline-block">
@@ -205,25 +214,25 @@ export default function AprovarConcursosPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-4xl font-bold text-white mb-2">Aprovar Concursos Externos</h1>
-              <p className="text-gray-400">Revise, edite e aprove concursos do PCI Concursos</p>
+              <p className="text-cyan-200/70">Revise, edite e aprove concursos do PCI Concursos</p>
             </div>
           </div>
         </div>
 
         {/* Status da API */}
-        <div className="mb-6 flex items-center gap-4 bg-gray-900 border border-gray-800 rounded-lg p-4">
+        <div className="mb-6 flex items-center gap-4 backdrop-blur-md bg-gray-900/40 border border-white/10 rounded-xl p-4">
           <div className="flex items-center gap-2">
             {loading ? (
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-cyan-500"></div>
             ) : sincronizado ? (
-              <span className="text-green-400">✓</span>
+              <span className="text-cyan-400">✓</span>
             ) : null}
-            <span className="text-gray-300">
+            <span className="text-cyan-100/90">
               {loading ? 'Buscando da API...' : sincronizado ? 'API carregada' : 'Aguardando...'}
             </span>
           </div>
           {concursosFiltrados.length > 0 && (
-            <span className="text-sm text-gray-400">
+            <span className="text-sm text-cyan-200/60">
               {concursosFiltrados.length} concurso(s) para revisar
             </span>
           )}
@@ -231,30 +240,30 @@ export default function AprovarConcursosPage() {
 
         {/* Mensagem */}
         {mensagem && (
-          <div className={`mb-6 p-4 rounded-lg border ${
+          <div className={`mb-6 p-4 rounded-xl backdrop-blur-md border ${
             mensagem.tipo === 'sucesso' 
-              ? 'bg-green-900/30 border-green-700 text-green-300' 
-              : 'bg-red-900/30 border-red-700 text-red-300'
+              ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-200' 
+              : 'bg-red-500/10 border-red-500/30 text-red-200'
           }`}>
             <p className="font-semibold">{mensagem.texto}</p>
           </div>
         )}
 
         {error && (
-          <div className="mb-6 p-4 rounded-lg border bg-red-900/30 border-red-700 text-red-300">
+          <div className="mb-6 p-4 rounded-xl backdrop-blur-md border bg-red-500/10 border-red-500/30 text-red-200">
             <p className="font-semibold">⚠️ {error}</p>
           </div>
         )}
 
         {/* Lista de concursos */}
         {loading ? (
-          <div className="text-center py-12 bg-gray-900 border border-gray-800 rounded-lg">
+          <div className="text-center py-12 backdrop-blur-md bg-gray-900/40 border border-white/10 rounded-xl">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500 mx-auto mb-4"></div>
-            <p className="text-gray-400 text-lg">Carregando concursos da API...</p>
+            <p className="text-cyan-200/70 text-lg">Carregando concursos da API...</p>
           </div>
         ) : concursosFiltrados.length === 0 ? (
-          <div className="text-center py-12 bg-gray-900 border border-gray-800 rounded-lg">
-            <p className="text-gray-400 text-lg">
+          <div className="text-center py-12 backdrop-blur-md bg-gray-900/40 border border-white/10 rounded-xl">
+            <p className="text-cyan-200/70 text-lg">
               {concursosAPI.length === 0 ? 'Nenhum concurso encontrado na API' : 'Todos os concursos foram processados!'}
             </p>
           </div>
@@ -265,7 +274,7 @@ export default function AprovarConcursosPage() {
               return (
                 <div
                   key={concurso.id}
-                  className="bg-gray-900 border border-gray-800 rounded-lg hover:border-cyan-500 transition-colors p-6"
+                  className="backdrop-blur-md bg-gray-900/40 border border-white/10 rounded-xl hover:border-cyan-400/40 hover:shadow-lg hover:shadow-cyan-500/10 transition-all p-6"
                 >
                   {editando === concurso.id && concursoEditado ? (
                     // Modo edição
@@ -277,7 +286,7 @@ export default function AprovarConcursosPage() {
                             type="text"
                             value={concursoEditado.nome}
                             onChange={(e) => setConcursoEditado({ ...concursoEditado, nome: e.target.value })}
-                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            className="w-full px-3 py-2 backdrop-blur-sm bg-gray-800/60 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/50"
                           />
                         </div>
                         <div>
@@ -286,7 +295,7 @@ export default function AprovarConcursosPage() {
                             type="text"
                             value={concursoEditado.orgao}
                             onChange={(e) => setConcursoEditado({ ...concursoEditado, orgao: e.target.value })}
-                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            className="w-full px-3 py-2 backdrop-blur-sm bg-gray-800/60 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/50"
                           />
                         </div>
                         <div>
@@ -295,7 +304,7 @@ export default function AprovarConcursosPage() {
                             type="text"
                             value={concursoEditado.salario || ''}
                             onChange={(e) => setConcursoEditado({ ...concursoEditado, salario: e.target.value })}
-                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            className="w-full px-3 py-2 backdrop-blur-sm bg-gray-800/60 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/50"
                           />
                         </div>
                         <div>
@@ -304,7 +313,7 @@ export default function AprovarConcursosPage() {
                             type="number"
                             value={concursoEditado.vagas || 0}
                             onChange={(e) => setConcursoEditado({ ...concursoEditado, vagas: parseInt(e.target.value) })}
-                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            className="w-full px-3 py-2 backdrop-blur-sm bg-gray-800/60 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/50"
                           />
                         </div>
                         <div className="md:col-span-2">
@@ -313,7 +322,7 @@ export default function AprovarConcursosPage() {
                             type="url"
                             value={concursoEditado.edital || ''}
                             onChange={(e) => setConcursoEditado({ ...concursoEditado, edital: e.target.value })}
-                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            className="w-full px-3 py-2 backdrop-blur-sm bg-gray-800/60 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/50"
                           />
                         </div>
                         <div>
@@ -322,7 +331,7 @@ export default function AprovarConcursosPage() {
                             type="date"
                              value={converterDataParaISO(concursoEditado.dataFinalInscricao || '')}
                              onChange={(e) => setConcursoEditado({ ...concursoEditado, dataFinalInscricao: converterDataParaBR(e.target.value) })}
-                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            className="w-full px-3 py-2 backdrop-blur-sm bg-gray-800/60 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/50"
                           />
                         </div>
                         <div>
@@ -331,7 +340,7 @@ export default function AprovarConcursosPage() {
                             type="date"
                             value={converterDataParaISO(concursoEditado.dataProva || '')}
                             onChange={(e) => setConcursoEditado({ ...concursoEditado, dataProva: converterDataParaBR(e.target.value) })}
-                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            className="w-full px-3 py-2 backdrop-blur-sm bg-gray-800/60 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/50"
                           />
                         </div>
                         <div>
@@ -340,7 +349,7 @@ export default function AprovarConcursosPage() {
                             type="date"
                             value={converterDataParaISO(concursoEditado.dataEncerramento || '')}
                             onChange={(e) => setConcursoEditado({ ...concursoEditado, dataEncerramento: converterDataParaBR(e.target.value) })}
-                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            className="w-full px-3 py-2 backdrop-blur-sm bg-gray-800/60 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/50"
                           />
                         </div>
                          <div>
@@ -349,7 +358,7 @@ export default function AprovarConcursosPage() {
                              type="text"
                              value={concursoEditado.uf || ''}
                              onChange={(e) => setConcursoEditado({ ...concursoEditado, uf: e.target.value })}
-                             className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                             className="w-full px-3 py-2 backdrop-blur-sm bg-gray-800/60 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/50"
                              placeholder="Ex: SP, RJ, MG"
                            />
                          </div>
@@ -359,7 +368,7 @@ export default function AprovarConcursosPage() {
                              value={concursoEditado.descricao || ''}
                              onChange={(e) => setConcursoEditado({ ...concursoEditado, descricao: e.target.value })}
                              rows={3}
-                             className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                             className="w-full px-3 py-2 backdrop-blur-sm bg-gray-800/60 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/50"
                              placeholder="Informações adicionais sobre o concurso..."
                            />
                          </div>
@@ -368,13 +377,13 @@ export default function AprovarConcursosPage() {
                       <div className="flex gap-2 pt-4">
                         <button
                           onClick={handleSalvarEdicao}
-                          className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded transition-colors font-semibold"
+                          className="flex-1 backdrop-blur-sm bg-cyan-500/10 border border-cyan-400/30 hover:bg-cyan-500/20 text-cyan-100 py-2 px-4 rounded-xl transition-all font-semibold shadow-lg hover:shadow-cyan-500/20"
                         >
                           ✓ Salvar Alterações
                         </button>
                         <button
                           onClick={handleCancelarEdicao}
-                          className="flex-1 bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded transition-colors font-semibold"
+                          className="flex-1 backdrop-blur-sm bg-gray-500/10 border border-gray-400/30 hover:bg-gray-500/20 text-gray-100 py-2 px-4 rounded-xl transition-all font-semibold"
                         >
                           ✕ Cancelar
                         </button>
@@ -459,20 +468,20 @@ export default function AprovarConcursosPage() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleEditar(concurso)}
-                          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
+                          className="px-4 py-2 backdrop-blur-sm bg-blue-500/10 border border-blue-400/30 hover:bg-blue-500/20 text-blue-100 rounded-xl transition-all font-semibold shadow-lg hover:shadow-blue-500/20"
                         >
                           ✏️ Editar
                         </button>
                         <button
                           onClick={() => handleAprovar(concurso)}
                           disabled={aprovando === concurso.id}
-                          className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition-colors disabled:opacity-50"
+                          className="px-4 py-2 backdrop-blur-sm bg-emerald-500/10 border border-emerald-400/30 hover:bg-emerald-500/20 text-emerald-100 rounded-xl transition-all font-semibold shadow-lg hover:shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {aprovando === concurso.id ? 'Aprovando...' : '✓ Aprovar'}
                         </button>
                         <button
                           onClick={() => handleIgnorar(concurso.id)}
-                          className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
+                          className="px-4 py-2 backdrop-blur-sm bg-red-500/10 border border-red-400/30 hover:bg-red-500/20 text-red-100 rounded-xl transition-all font-semibold shadow-lg hover:shadow-red-500/20"
                         >
                           ✕ Ignorar
                         </button>

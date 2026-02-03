@@ -5,6 +5,7 @@ import { useState, useMemo } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useConcursos } from '@/lib/use-concursos';
 import Link from 'next/link';
+import GlassBackground from './GlassBackground';
 
 export default function ConcursosDisponivelsList() {
   const { concursosData, loading: loadingInternos, atualizarConcursoData } = useConcursosData();
@@ -182,14 +183,17 @@ export default function ConcursosDisponivelsList() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-[rgb(3,7,18)] via-[rgb(17,24,39)] to-[rgb(0,0,0)]">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-linear-to-br from-[rgb(3,7,18)] via-[rgb(17,24,39)] to-[rgb(0,0,0)] relative">
+      <GlassBackground />
+      
+      <div className="relative z-10 space-y-6 px-4 py-8">
       {editError && (
         <div className="bg-red-900 bg-opacity-30 border border-red-700 text-red-300 px-4 py-3 rounded">
           <p className="font-semibold">⚠️ {editError}</p>
@@ -356,7 +360,7 @@ export default function ConcursosDisponivelsList() {
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-gray-400">Salário</label>
+                      <label className="text-xs text-gray-400">Salário até</label>
                       <input
                         value={concursoEditado.salario}
                         onChange={(e) => setConcursoEditado({ ...concursoEditado, salario: e.target.value })}
@@ -428,7 +432,7 @@ export default function ConcursosDisponivelsList() {
               )}
 
               {/* Rodapé */}
-              <div className="bg-gray-800 p-4 border-t border-gray-700 space-y-2 h-full ">
+              <div className="bg-gray-800 p-4 border-t border-gray-700 space-y-2 h-full">
                 {concurso.original?.edital && (
                   <a
                     href={concurso.original.edital}
@@ -477,6 +481,7 @@ export default function ConcursosDisponivelsList() {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 }
