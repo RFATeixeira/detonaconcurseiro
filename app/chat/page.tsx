@@ -242,7 +242,7 @@ export default function ChatPage() {
 
   return (
     <div
-      className="fixed inset-0 bg-gray-950 overflow-hidden overscroll-none"
+      className="fixed inset-0 bg-gray-950 overflow-hidden"
       style={{
         backgroundImage:
           'linear-gradient(135deg, rgb(3, 7, 18) 0%, rgb(17, 24, 39) 50%, rgb(0, 0, 0) 100%)',
@@ -250,7 +250,7 @@ export default function ChatPage() {
     >
       <GlassBackground />
 
-      <main className="relative z-10 w-full h-full flex flex-col overflow-hidden pt-16 md:pt-24 md:px-4">
+      <main className="relative z-10 w-full h-full flex flex-col overflow-hidden pt-[calc(env(safe-area-inset-top)+4rem)] md:pt-24 md:px-4">
         <div className="backdrop-blur-sm bg-white/5 rounded-none md:rounded-2xl shadow-2xl border-0 md:border border-white/10 overflow-x-hidden overflow-y-hidden flex md:h-[calc(100vh-8rem)] h-full flex-col md:flex-row w-full">
           {/* Sidebar - Menu lateral */}
           <div
@@ -420,7 +420,7 @@ export default function ChatPage() {
             </div>
             
 
-            <div className="flex-1 overflow-y-auto overscroll-contain px-1 md:px-6 py-4 md:py-6 space-y-4 relative z-0 scrollbar-hide w-full" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="flex-1 overflow-y-auto px-1 md:px-6 py-4 md:py-6 space-y-4 relative z-0 scrollbar-hide w-full" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {messages.length === 0 ? (
                 <div className="text-center text-gray-400 mt-20">
                   Nenhuma mensagem ainda. Seja o primeiro a falar neste chat.
