@@ -99,6 +99,9 @@ export default function ChatPage() {
   }, [concursos]);
 
   useEffect(() => {
+    // Verificar se db está inicializado (cliente apenas)
+    if (!db) return;
+    
     const chatQuery = query(
       collection(db, 'live-chat'),
       where('chatRoom', '==', activeRoom),
@@ -158,7 +161,7 @@ export default function ChatPage() {
   }, [messages, readNotifications]);
 
   const handleSend = async () => {
-    if (!user || !message.trim()) return;
+    if (!user || !message.trim() || !db) return;
     setSending(true);
     try {
       const messageData: any = {

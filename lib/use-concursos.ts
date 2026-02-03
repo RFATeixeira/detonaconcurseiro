@@ -32,6 +32,13 @@ export const useConcursos = () => {
   useEffect(() => {
     setLoading(true);
     
+    // Verificar se Firebase está inicializado
+    if (!auth || !db) {
+      setLoading(false);
+      setConcursos([]);
+      return;
+    }
+    
     if (!auth.currentUser) {
       setLoading(false);
       setConcursos([]);
@@ -92,6 +99,11 @@ export const useConcursos = () => {
   }, [auth.currentUser?.uid]);
 
   const adicionarConcurso = async (nomeConcurso: string, numeroInscricao: string) => {
+    if (!auth || !db) {
+      setError('Firebase não inicializado');
+      return;
+    }
+    
     if (!auth.currentUser) {
       setError('Usuário não autenticado');
       return;

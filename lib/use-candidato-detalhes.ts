@@ -33,6 +33,13 @@ export const useCandidatoDetalhes = (nomeConcurso: string, numeroInscricao: stri
         setLoading(true);
         setError(null);
 
+        // Verificar se Firebase está inicializado
+        if (!db) {
+          setError('Firebase não inicializado');
+          setLoading(false);
+          return;
+        }
+
         // Buscar o concurso para pegar o ID
         const concursosDataRef = collection(db, 'concursosData');
         const q = query(concursosDataRef, where('nomeConcurso', '==', nomeConcurso));

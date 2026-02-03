@@ -51,6 +51,11 @@ export function useProfile() {
     setSuccess(false);
 
     try {
+      // Verificar se Firebase está inicializado
+      if (!auth || !db) {
+        throw new Error('Firebase não inicializado');
+      }
+
       const user = auth.currentUser;
       if (!user) {
         throw new Error('Usuário não autenticado');
@@ -104,6 +109,11 @@ export function useProfile() {
     setSuccess(false);
 
     try {
+      // Verificar se Firebase está inicializado
+      if (!auth) {
+        throw new Error('Firebase não inicializado');
+      }
+
       const user = auth.currentUser;
       if (!user) {
         throw new Error('Usuário não autenticado');

@@ -32,6 +32,12 @@ export const useConcursosExternosPendentes = () => {
 
   useEffect(() => {
     try {
+      // Verificar se Firebase está inicializado
+      if (!db) {
+        setLoading(false);
+        return;
+      }
+
       console.log('🔄 useConcursosExternosPendentes: Iniciando listener...');
       const pendentesRef = collection(db, 'concursosExternosPendentes');
       // Removendo orderBy temporariamente para não exigir índice

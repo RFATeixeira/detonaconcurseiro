@@ -27,6 +27,11 @@ export const useSalvarCandidatos = () => {
       setLoading(true);
       setError(null);
 
+      // Verificar se Firebase está inicializado
+      if (!db) {
+        throw new Error('Firebase não inicializado');
+      }
+
       if (!candidatos || candidatos.length === 0) {
         throw new Error('Nenhum candidato para salvar');
       }

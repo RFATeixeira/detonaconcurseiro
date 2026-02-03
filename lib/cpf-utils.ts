@@ -10,6 +10,12 @@ import { query, where, collection, getDocs } from 'firebase/firestore';
  */
 export async function findEmailByCPF(cpf: string): Promise<string | null> {
   try {
+    // Verificar se Firebase está inicializado
+    if (!db) {
+      console.error('Firebase não inicializado');
+      return null;
+    }
+
     // Remove formatação do CPF
     const cleanCPF = cpf.replace(/\D/g, '');
 

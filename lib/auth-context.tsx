@@ -76,6 +76,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       setError(null);
 
+      // Verificar se Firebase está inicializado
+      if (!auth || !db) {
+        throw new Error('Firebase não inicializado. Aguarde um momento.');
+      }
+
       // Validar CPF
       if (!validateCPF(cpf)) {
         throw new Error('CPF inválido');
@@ -107,6 +112,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const loginUser = async (cpfOrEmail: string, password: string) => {
     try {
       setError(null);
+
+      // Verificar se Firebase está inicializado
+      if (!auth || !db) {
+        throw new Error('Firebase não inicializado. Aguarde um momento.');
+      }
 
       let email = cpfOrEmail;
 
@@ -154,6 +164,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logoutUser = async () => {
     try {
       setError(null);
+      
+      // Verificar se Firebase está inicializado
+      if (!auth) {
+        throw new Error('Firebase não inicializado. Aguarde um momento.');
+      }
+      
       await signOut(auth);
       setUser(null);
       setUserProfile(null);
@@ -166,6 +182,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Verificar estado de autenticação
   useEffect(() => {
+    // Aguardar inicialização do Firebase
+    if (!auth || !db) {
+      setLoading(false);
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
 

@@ -39,6 +39,12 @@ export const useConcursosData = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Verificar se Firebase está inicializado
+    if (!db) {
+      setLoading(false);
+      return;
+    }
+
     const concursosRef = collection(db, 'concursosData');
     const q = query(concursosRef, orderBy('dataCriacao', 'desc'));
     
@@ -82,6 +88,11 @@ export const useConcursosData = () => {
     try {
       setError(null);
 
+      // Verificar se Firebase está inicializado
+      if (!db) {
+        throw new Error('Firebase não inicializado');
+      }
+
       const concursosRef = collection(db, 'concursosData');
       
       await addDoc(concursosRef, {
@@ -107,6 +118,7 @@ export const useConcursosData = () => {
   const deletarConcursoData = async (id: string) => {
     try {
       setError(null);
+      if (!db) throw new Error('Firebase não inicializado');
       const docRef = doc(db, 'concursosData', id);
       await deleteDoc(docRef);
     } catch (err) {
