@@ -1,36 +1,219 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎯 Detona Concurseiro
 
-## Getting Started
+Sistema completo de gestão de concursos públicos com integração de APIs externas, aprovação administrativa e acompanhamento de candidatos.
 
-First, run the development server:
+## 📋 Funcionalidades
 
+### Para Candidatos
+- ✅ Cadastro e autenticação por CPF
+- 📚 Visualização de concursos disponíveis
+- ⭐ Adicionar concursos aos favoritos
+- 📊 Dashboard personalizado com progresso
+- 💬 Chat em tempo real
+- 📄 Upload de documentos
+- 👤 Gerenciamento de perfil
+
+### Para Administradores
+- ➕ Cadastro manual de concursos
+- 📥 Importação de candidatos via Excel
+- 🔄 Integração com PCI Concursos (web scraping)
+- ✅ Sistema de aprovação de concursos externos
+- ✏️ Edição inline de concursos
+- 🏷️ Tags de status (Edital Aberto, Em andamento, Encerrado)
+- 🎯 Filtros avançados
+
+## 🛠️ Tecnologias
+
+- **Frontend**: Next.js 15, React, TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes, Firebase Admin SDK
+- **Banco de Dados**: Firestore (Firebase)
+- **Autenticação**: Firebase Auth
+- **Storage**: Firebase Storage
+- **Web Scraping**: Cheerio
+- **Excel**: xlsx
+
+## 🚀 Instalação
+
+### Pré-requisitos
+- Node.js 18+
+- npm ou yarn
+- Conta Firebase
+
+### Passo 1: Clone o repositório
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/RFATeixeira/detonaconcurseiro.git
+cd detonaconcurseiro
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Passo 2: Instale as dependências
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Passo 3: Configure o Firebase
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Crie um projeto no [Firebase Console](https://console.firebase.google.com)
+2. Ative Authentication (Email/Password)
+3. Crie o Firestore Database
+4. Ative o Storage
+5. Copie `.env.example` para `.env.local` e preencha com suas credenciais
 
-## Learn More
+```bash
+cp .env.example .env.local
+```
 
-To learn more about Next.js, take a look at the following resources:
+#### Obter credenciais do Firebase:
+- **Client SDK**: Project Settings → General → Your apps
+- **Admin SDK**: Project Settings → Service Accounts → Generate new private key
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Passo 4: Configure as regras do Firestore
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /concursosData/{docId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    match /users/{userId} {
+      allow read: if request.auth.uid == userId;
+      match /concursos/{docId} {
+        allow read, write: if request.auth.uid == userId;
+      }
+    }
+  }
+}
+```
 
-## Deploy on Vercel
+### Passo 5: Crie um usuário admin
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Registre-se no sistema
+2. No Firestore, vá em `users/{seu-uid}`
+3. Adicione o campo: `isAdmin: true`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Passo 6: Execute o projeto
+```bash
+npm run dev
+```
+
+Acesse: [http://localhost:3000](http://localhost:3000)
+
+## 📁 Estrutura do Projeto
+
+```
+detonaconcurseiro/
+├── app/
+│   ├── admin/                    # Painel administrativo
+│   │   └── aprovar-concursos/    # Aprovação de concursos externos
+│   ├── api/                      # API Routes
+│   │   ├── aprovar-concurso-externo/
+│   │   └── concursos-externos/   # Web scraping PCI
+│   ├── concursos-disponiveis/    # Lista pública de concursos
+│   ├── meus-concursos/           # Concursos do candidato
+│   ├── dashboard/                # Dashboard do candidato
+│   └── perfil/                   # Perfil do usuário
+├── components/                   # Componentes React
+│   ├── AddConcursoDataForm.tsx
+│   ├── ConcursosDisponivelsList.tsx
+│   ├── ImportarPlanilha.tsx
+│   └── ...
+├── lib/                          # Hooks e utilitários
+│   ├── firebase.ts               # Config Firebase Client
+│   ├── firebase-admin.ts         # Config Firebase Admin
+│   ├── auth-context.tsx          # Contexto de autenticação
+│   ├── use-concursos-data.ts     # CRUD de concursos
+│   └── use-concursos-externos.ts # Integração API externa
+└── public/                       # Arquivos estáticos
+```
+
+## 🔑 Variáveis de Ambiente
+
+Arquivo `.env.local`:
+
+```env
+# Firebase Client SDK
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+
+# Firebase Admin SDK
+FIREBASE_ADMIN_PROJECT_ID=
+FIREBASE_ADMIN_CLIENT_EMAIL=
+FIREBASE_ADMIN_PRIVATE_KEY=
+```
+
+## 📖 Fluxo de Uso
+
+### Candidato
+1. Registra-se com CPF e email
+2. Visualiza concursos disponíveis
+3. Adiciona concursos aos favoritos
+4. Acompanha progresso no dashboard
+5. Faz upload de documentos
+6. Usa chat para suporte
+
+### Admin
+1. Acessa painel administrativo
+2. Cadastra concursos manualmente ou importa via API
+3. Revisa e edita concursos da API externa
+4. Aprova para publicação
+5. Importa candidatos via Excel
+6. Edita concursos publicados
+
+## 🎨 Funcionalidades Especiais
+
+### Status Automático de Concursos
+- **Edital Aberto**: Até data final de inscrição
+- **Em andamento**: Entre data final e data de encerramento
+- **Encerrado**: Após data de encerramento
+
+### Integração PCI Concursos
+- Web scraping automático de 444+ concursos
+- Extração de dados: nome, órgão, vagas, salário, datas
+- Sistema de aprovação antes de publicar
+- Edição inline de dados extraídos
+
+### Upload de Documentos
+- Firebase Storage integrado
+- Documentos vinculados a concursos
+- Download direto do painel admin
+
+## 🤝 Contribuindo
+
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT.
+
+## 🐛 Problemas Conhecidos
+
+- Web scraping depende da estrutura do site PCI Concursos
+- Necessário configurar Firebase Admin SDK para aprovar concursos
+- Upload de documentos grandes pode ser lento
+
+## 📞 Suporte
+
+Para dúvidas ou problemas:
+- Abra uma issue no [GitHub](https://github.com/RFATeixeira/detonaconcurseiro/issues)
+
+## 🎯 Roadmap
+
+- [ ] Sistema de notificações por email
+- [ ] Exportar relatórios em PDF
+- [ ] Integração com mais APIs de concursos
+- [ ] App mobile (React Native)
+- [ ] Sistema de ranking/gamificação
+
+---
+
+Desenvolvido com ❤️ para concurseiros
