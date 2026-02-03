@@ -2,6 +2,9 @@
 
 Sistema completo de gestão de concursos públicos com integração de APIs externas, aprovação administrativa e acompanhamento de candidatos.
 
+> ⚡ **TUDO PRONTO PARA DEPLOY NO VERCEL!** 
+> Veja: [DEPLOY_RESUMO.md](./DEPLOY_RESUMO.md) ou [VERCEL_QUICK.md](./VERCEL_QUICK.md)
+
 ## 📋 Funcionalidades
 
 ### Para Candidatos

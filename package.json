@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "setup": "node -e \"require('fs').existsSync('.env.local') ? require('fs').copyFileSync('.env.local', '.env.production.local') : console.error('❌ .env.local não encontrado!')\""
+    "setup": "node -e \"require('fs').existsSync('.env.local') ? require('fs').copyFileSync('.env.local', '.env.production.local') : console.error('❌ .env.local não encontrado!')\"",
+    "deploy": "node deploy-vercel.js",
+    "deploy:prod": "vercel --prod"
   },
   "dependencies": {
     "@opentelemetry/api": "^1.9.0",
