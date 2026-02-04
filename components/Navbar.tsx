@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { useState } from 'react';
+import { HeroIcons } from './HeroIcons';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -39,7 +40,7 @@ export default function Navbar() {
     pathname === '/meus-concursos' || pathname === '/concursos-disponiveis';
 
   return (
-    <nav className="bg-gray-900 border-b border-gray-800 shadow-lg sticky top-0 z-50">
+    <nav className="hidden md:block bg-gray-900 border-b border-gray-800 shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 gap-4">
           {/* Logo */}
@@ -80,18 +81,7 @@ export default function Navbar() {
                 }`}
               >
                 Concursos
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="w-4 h-4"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.24 4.5a.75.75 0 01-1.08 0l-4.24-4.5a.75.75 0 01.02-1.06z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <HeroIcons.ChevronDown className="w-4 h-4" />
               </button>
               <div className="absolute left-0 mt-2 w-56 rounded-xl border border-white/10 bg-gray-900/95 backdrop-blur-sm shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 <div className="py-2">
@@ -146,20 +136,7 @@ export default function Navbar() {
               className="text-gray-400 hover:text-red-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               title={isLoggingOut ? 'Desconectando...' : 'Sair'}
             >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                strokeWidth={2} 
-                stroke="currentColor" 
-                className="w-5 h-5"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" 
-                />
-              </svg>
+              <HeroIcons.ArrowRightOnRectangle className="w-5 h-5" />
             </button>
             {userProfile?.isAdmin && (
               <Link
@@ -167,20 +144,7 @@ export default function Navbar() {
                 className="text-gray-400 hover:text-cyan-400 transition-colors"
                 title="Admin"
               >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  strokeWidth={2} 
-                  stroke="currentColor" 
-                  className="w-5 h-5"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" 
-                  />
-                </svg>
+                <HeroIcons.ShieldCheck className="w-5 h-5" />
               </Link>
             )}
           </div>
@@ -192,9 +156,7 @@ export default function Navbar() {
               className="text-gray-400 hover:text-cyan-400 transition-colors"
               title="Perfil"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-              </svg>
+              <HeroIcons.UserCircle className="w-5 h-5" />
             </Link>
             <button
               onClick={handleLogout}
@@ -202,20 +164,7 @@ export default function Navbar() {
               className="text-gray-400 hover:text-red-400 transition-colors disabled:opacity-50"
               title={isLoggingOut ? 'Desconectando...' : 'Sair'}
             >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                strokeWidth={2} 
-                stroke="currentColor" 
-                className="w-5 h-5"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" 
-                />
-              </svg>
+              <HeroIcons.ArrowRightOnRectangle className="w-5 h-5" />
             </button>
             {userProfile?.isAdmin && (
               <Link
@@ -223,20 +172,7 @@ export default function Navbar() {
                 className="text-gray-400 hover:text-cyan-400 transition-colors"
                 title="Admin"
               >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  strokeWidth={2} 
-                  stroke="currentColor" 
-                  className="w-5 h-5"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" 
-                  />
-                </svg>
+                <HeroIcons.ShieldCheck className="w-5 h-5" />
               </Link>
             )}
             <button
@@ -245,16 +181,7 @@ export default function Navbar() {
               className="text-gray-400 hover:text-cyan-400 transition-colors"
               aria-label="Abrir menu"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                className="w-6 h-6"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+              <HeroIcons.Bars3 className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -282,20 +209,9 @@ export default function Navbar() {
               }`}
             >
               Concursos
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className={`w-4 h-4 transition-transform ${
-                  isMobileConcursosOpen ? 'rotate-180' : ''
-                }`}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.24 4.5a.75.75 0 01-1.08 0l-4.24-4.5a.75.75 0 01.02-1.06z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <HeroIcons.ChevronDown className={`w-4 h-4 transition-transform ${
+                isMobileConcursosOpen ? 'rotate-180' : ''
+              }`} />
             </button>
 
             {isMobileConcursosOpen && (

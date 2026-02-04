@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { collection, addDoc, onSnapshot, query, serverTimestamp, limit, Timestamp, where, deleteDoc, doc } from 'firebase/firestore';
 import { useAuth } from '@/lib/auth-context';
 import GlassBackground from '@/components/GlassBackground';
+import { HeroIcons } from '@/components/HeroIcons';
 import { db } from '@/lib/firebase';
 import { useConcursos } from '@/lib/use-concursos';
 
@@ -250,8 +251,18 @@ export default function ChatPage() {
     >
       <GlassBackground />
 
-      <main className="relative z-10 w-full h-full flex flex-col overflow-hidden pt-[calc(env(safe-area-inset-top)+4rem)] md:pt-24 md:px-4">
-        <div className="backdrop-blur-sm bg-white/5 rounded-none md:rounded-2xl shadow-2xl border-0 md:border border-white/10 overflow-x-hidden overflow-y-hidden flex md:h-[calc(100vh-8rem)] h-full flex-col md:flex-row w-full">
+      {/* Back Button - Mobile Only */}
+      <button
+        onClick={() => router.back()}
+        className="md:hidden fixed left-4 z-50 w-10 h-10 rounded-full bg-gray-900/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-gray-300 hover:text-cyan-300 hover:bg-gray-800/70 transition-all"
+        style={{ top: 'max(1rem, calc(var(--safe-area-inset-top, 0px) + 1rem))' }}
+        title="Voltar"
+      >
+        <HeroIcons.ArrowLeft className="w-5 h-5" />
+      </button>
+
+      <main className="relative z-10 w-full h-full flex flex-col overflow-hidden pt-[calc(env(safe-area-inset-top)+1rem)] md:pt-24 md:px-4">
+        <div className="backdrop-blur-sm bg-white/5 rounded-none md:rounded-2xl shadow-2xl border-0 md:border border-white/10 overflow-x-hidden overflow-y-hidden flex md:h-[calc(100vh-8rem)] h-[calc(100vh-7rem)] flex-col md:flex-row w-full">
           {/* Sidebar - Menu lateral */}
           <div
             className={`${
@@ -270,9 +281,7 @@ export default function ChatPage() {
                 onClick={() => setIsSidebarOpen(false)}
                 className="md:hidden text-gray-400 hover:text-white"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <HeroIcons.XMark className="w-6 h-6" />
               </button>
             </div>
 
@@ -330,16 +339,7 @@ export default function ChatPage() {
                   className="text-gray-400 hover:text-white transition-colors"
                   title={isSidebarOpen ? 'Fechar menu' : 'Abrir menu'}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                  </svg>
+                  <HeroIcons.Bars3 className="w-6 h-6" />
                 </button>
                 <div>
                   <div className="flex items-center gap-2">
@@ -366,29 +366,7 @@ export default function ChatPage() {
                     }`}
                     title={isAlertMode ? 'Modo aviso ativo' : 'Ativar modo aviso'}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"       
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                     >
-                      {/* Triângulo */}
-                      <path
-                        strokeLinecap="round"      
-                        strokeLinejoin="round"
-                        d="M12 3L2.25 20.25h19.5L12 3Z"
-                      />
-
-                       {/* Exclamação */}
-                        <path
-                         strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 9v5"
-                      />
-                        <circle cx="12" cy="17" r="1" fill="currentColor" />
-                      </svg>
+                    <HeroIcons.ExclamationTriangle className="w-6 h-6" />
                   </button>
                 )}
                 <button
@@ -396,20 +374,7 @@ export default function ChatPage() {
                   className="relative text-gray-400 hover:text-cyan-300 transition-colors"
                   title="Notificações"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                    />
-                  </svg>
+                  <HeroIcons.Bell className="w-6 h-6" />
                   {unreadNotifications > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                       {unreadNotifications}
@@ -475,20 +440,7 @@ export default function ChatPage() {
                             className="text-cyan-400 hover:text-cyan-300 transition-colors"
                             title="Responder"
                           >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={2}
-                              stroke="currentColor"
-                              className="w-4 h-4"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-4.5m4.5 0v4.5"
-                              />
-                            </svg>
+                            <HeroIcons.ArrowUturnLeft className="w-4 h-4" />
                           </button>
                           {userProfile?.isAdmin && (
                             <button
@@ -496,20 +448,7 @@ export default function ChatPage() {
                               className="text-red-400 hover:text-red-300 transition-colors"
                               title="Deletar mensagem"
                             >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={2}
-                                stroke="currentColor"
-                                className="w-4 h-4"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                />
-                              </svg>
+                              <HeroIcons.TrashIcon className="w-4 h-4" />
                             </button>
                           )}
                         </div>
@@ -532,9 +471,7 @@ export default function ChatPage() {
                   onClick={() => setReplyingTo(null)}
                   className="text-gray-400 hover:text-white ml-2"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+                  <HeroIcons.XMark className="w-5 h-5" />
                 </button>
               </div>
             )}

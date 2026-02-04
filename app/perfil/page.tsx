@@ -7,9 +7,20 @@ import { useRouter } from 'next/navigation';
 import GlassBackground from '@/components/GlassBackground';
 
 export default function PerfilPage() {
-  const { user, userProfile, loading: authLoading } = useAuth();
+  const { user, userProfile, loading: authLoading, logoutUser } = useAuth();
   const { updateProfile, loading, error, success } = useProfile();
   const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logoutUser();
+      router.push('/login');
+    } catch {
+      setIsLoggingOut(false);
+    }
+  };
 
   const [formData, setFormData] = useState({
     displayName: '',
@@ -85,13 +96,13 @@ export default function PerfilPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 relative overflow-hidden py-12 px-4" style={{ backgroundImage: 'linear-gradient(135deg, rgb(3, 7, 18) 0%, rgb(17, 24, 39) 50%, rgb(0, 0, 0) 100%)' }}>
+    <div className="min-h-screen bg-gray-950 relative overflow-hidden px-4" style={{ backgroundImage: 'linear-gradient(135deg, rgb(3, 7, 18) 0%, rgb(17, 24, 39) 50%, rgb(0, 0, 0) 100%)', paddingTop: 'max(3rem, calc(var(--safe-area-inset-top, 0px) + 3rem))', paddingBottom: '6rem' }}>
       <GlassBackground />
       <div className="max-w-3xl mx-auto relative z-10">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white drop-shadow-lg mb-2">Meu Perfil</h1>
-          <p className="text-cyan-200">
+          <h1 className="text-xl md:text-4xl font-bold text-white drop-shadow-lg mb-2">Meu Perfil</h1>
+          <p className="text-cyan-200 text-md md:text-lg">
             Gerencie suas informações pessoais e preferências
           </p>
         </div>
@@ -195,7 +206,7 @@ export default function PerfilPage() {
             </div>
 
             {/* Botões */}
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-4 pt-4 flex-wrap">
               <button
                 type="submit"
                 disabled={loading}
@@ -210,6 +221,15 @@ export default function PerfilPage() {
                 className="flex-1 backdrop-blur-sm bg-white/5 hover:bg-white/10 text-white font-semibold py-3 px-6 rounded-lg transition-all border border-white/10 hover:border-cyan-400/50"
               >
                 Cancelar
+              </button>
+
+              <button
+                type="button"
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="flex-1 backdrop-blur-sm bg-linear-to-r from-red-500/30 to-red-600/30 hover:from-red-500/40 hover:to-red-600/40 disabled:from-gray-500/20 disabled:to-gray-500/20 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-all border border-red-400/30 hover:border-red-400/60"
+              >
+                {isLoggingOut ? 'Saindo...' : 'Sair'}
               </button>
             </div>
           </form>

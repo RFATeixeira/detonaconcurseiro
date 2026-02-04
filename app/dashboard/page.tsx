@@ -56,7 +56,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-950 relative overflow-hidden" style={{ backgroundImage: 'linear-gradient(135deg, rgb(3, 7, 18) 0%, rgb(17, 24, 39) 50%, rgb(0, 0, 0) 100%)' }}>
       <GlassBackground />
       
-      <main className="relative z-10 max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <main className="relative z-10 max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8" style={{ paddingTop: 'max(3rem, calc(var(--safe-area-inset-top, 0px) + 3rem))' }}>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Card Lateral Esquerdo - Dados do Concurseiro */}
           <div className="lg:col-span-1">

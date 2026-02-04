@@ -33,7 +33,7 @@ export default function ConcursosDisponiveisPage() {
     <div className="min-h-screen bg-gray-950 relative overflow-hidden" style={{ backgroundImage: 'linear-gradient(135deg, rgb(3, 7, 18) 0%, rgb(17, 24, 39) 50%, rgb(0, 0, 0) 100%)' }}>
       <GlassBackground />
       {/* Conteúdo Principal */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{ paddingTop: 'max(3rem, calc(var(--safe-area-inset-top, 0px) + 3rem))', paddingBottom: '6rem' }}>
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white drop-shadow-lg mb-2">Concursos Disponíveis</h1>
           <p className="text-cyan-200">Encontre e adicione concursos aos seus favoritos</p>

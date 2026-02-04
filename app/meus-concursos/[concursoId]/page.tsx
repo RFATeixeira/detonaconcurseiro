@@ -45,7 +45,7 @@ export default function DetalheConcursoPage() {
       <Navbar />
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8" style={{ paddingTop: 'max(3rem, calc(var(--safe-area-inset-top, 0px) + 3rem))', paddingBottom: '6rem' }}>
         {/* Botão Voltar */}
         <button
           onClick={() => router.back()}
